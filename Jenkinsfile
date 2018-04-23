@@ -7,8 +7,7 @@ pipeline {
             steps {
                 echo 'Building..'
                 checkout scm
-                sh 'make'
-                archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
+                sh 'gradle build'
             }
         }
         stage('Test') {
@@ -17,8 +16,8 @@ pipeline {
                 /* `make check` returns non-zero on test failures,
                  *  using `true` to allow the Pipeline to continue nonetheless
                  */
-                sh 'make check || true'
-                junit '**/target/*.xml'
+                sh 'gradle clean test'
+                junit 'reports/**/*.xml'
             }
         }
     }
