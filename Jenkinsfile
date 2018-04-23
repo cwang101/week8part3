@@ -1,8 +1,25 @@
 #!groovy
-node (){
-stage 'Build and Test'
-env.PATH = "${tool 'M3'}/bin:${env.PATH}"
-//checkout scm
-git url:"https://github.com/cwang101/week8part3.git"
-sh 'mvn clean package'
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building..'
+                checkout scm
+                sh 'make'
+                archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Testing..'
+                /* `make check` returns non-zero on test failures,
+                 *  using `true` to allow the Pipeline to continue nonetheless
+                 */
+                sh 'make check || true'
+                junit '**/target/*.xml'
+            }
+        }
+    }
 }
