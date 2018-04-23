@@ -7,7 +7,7 @@ pipeline {
             steps {
                 echo 'Building..'
                 checkout scm
-                sh 'gradle build'
+                gradle build
             }
         }
         stage('Test') {
@@ -16,7 +16,7 @@ pipeline {
                 /* `make check` returns non-zero on test failures,
                  *  using `true` to allow the Pipeline to continue nonetheless
                  */
-                sh 'gradle clean test'
+                gradle clean test
                 junit 'reports/**/*.xml'
             }
         }
