@@ -1,6 +1,6 @@
 #!groovy
 node{
-    def gradleHome = tool 'Gradle4.7'
+    def gradleHome = tool 'Gradle 4.7'
     env.PATH = "${gradleHome}/bin:${env.PATH}"
 
 }
