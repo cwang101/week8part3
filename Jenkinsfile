@@ -1,15 +1,16 @@
 #!groovy
+node{
+    def gradleHome = tool 'Gradle4.7'
+    env.PATH = "${gradleHome}/bin:${env.PATH}"
+
+}
 pipeline {
     agent any
-    tools {
-        gradle 'Gradle 4.7'
-    }
     stages {
         stage('Build') {
             steps {
                 echo 'Building..'
-                checkout scm
-               sh 'gradlew build'
+                sh 'gradle build --info'
             }
         }
         stage('Test') {
@@ -18,8 +19,7 @@ pipeline {
                 /* `make check` returns non-zero on test failures,
                  *  using `true` to allow the Pipeline to continue nonetheless
                  */
-                sh 'gradlew test'
-                junit 'reports/**/*.xml'
+                sh 'gradle test --info'
             }
         }
     }
