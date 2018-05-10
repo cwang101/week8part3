@@ -10,6 +10,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building..'
+                checkout scm
                 sh 'gradle build --info'
             }
         }
